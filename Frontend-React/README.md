@@ -1,46 +1,225 @@
-# Getting Started with Create React App
+# E-Commerce Frontend – React Application
+## Project Structure Overview
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+```
+src/
+│
+├── app/
+│   └── store.ts                 # Redux store configuration
+│
+├── components/
+│   ├── AboutUs.tsx
+│   ├── ContactUs.tsx
+│   ├── ContactUs.css
+│   ├── DialogBox.tsx
+│   ├── Footer.jsx
+│   ├── Footer.css
+│   ├── Home.tsx
+│   ├── LogoCarousel.tsx
+│   ├── LogoCarousel.css
+│   ├── Logout.tsx
+│   ├── Navbar.tsx
+│   ├── Navbar.css
+│   └── Toast.tsx
+│
+├── features/
+│   ├── apis/
+│   │   ├── signInApis.ts
+│   │   └── signUpApi.ts
+│   │
+│   ├── auth/
+│   │   ├── authSlice.ts
+│   │   ├── ResetPassword.tsx
+│   │   ├── ResetPassword.css
+│   │   ├── ResetPasswordLink.tsx
+│   │   ├── Signin.tsx
+│   │   ├── Signin.css
+│   │   ├── signInSchema.ts
+│   │   ├── Signup.tsx
+│   │   ├── Signup.css
+│   │   └── signUpSchema.ts
+│   │
+│   ├── cart/
+│   │   ├── cartSlice.ts
+│   │   ├── Cart.tsx
+│   │   └── Cart.css
+│   │
+│   ├── payment/
+│   │   ├── hooks.ts
+│   │   ├── OrderCreate.tsx
+│   │   ├── OrderCreate.css
+│   │   ├── PaymentGateway.tsx
+│   │   ├── paymentSlice.ts
+│   │   ├── TransactionPage.tsx
+│   │   └── TransactionPage.css
+│   │
+│   └── products/
+│       ├── AddProduct.tsx
+│       ├── AddProduct.css
+│       ├── ProductDetail.tsx
+│       ├── ProductDetail.css
+│       ├── ProductList.tsx
+│       ├── ProductList.css
+│       ├── productSlice.ts
+│       └── useLazyLoad.ts
+│
+├── types/
+│   ├── auth.d.ts
+│   ├── cart.d.ts
+│   └── product.d.ts
+│
+├── App.tsx
+├── index.tsx
+├── .gitignore
+├── package.json
+├── package-lock.json
+├── tsconfig.json
+└── README.md
+```
 
-## Available Scripts
+## 📁 Frontend Folder Structure (React + TypeScript)
 
-In the project directory, you can run:
+This project follows a modular folder structure optimized for scalability, maintainability, and separation of concerns. Below is a detailed explanation of each folder and its contents:
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
-### `npm test`
+### 📄 `README.md`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+### 📁 `src/`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The root folder for all frontend source code. It contains subfolders for state management, components, features, types, and main app files.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 📁 `app/`
 
-### `npm run eject`
+Centralized configuration for the Redux store.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- **`store.ts`**  
+  Initializes and exports the Redux store using `configureStore` from Redux Toolkit. All feature slices are combined here.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### 📁 `components/`
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Contains **shared reusable UI components** used across multiple pages.
 
-## Learn More
+- **`AboutUs.tsx`** – Static component describing the website or company.  
+- **`ContactUs.tsx` + `ContactUs.css`** – Contact form with styled layout.  
+- **`DialogBox.tsx`** – Reusable modal/dialog component for confirmations or alerts.  
+- **`Footer.jsx` + `Footer.css`** – Website footer with navigation and copyright.  
+- **`Home.tsx`** – Homepage UI with introductory content.  
+- **`LogoCarousel.tsx` + `LogoCarousel.css`** – Carousel slider to display brand logos.  
+- **`Logout.tsx`** – UI for logout operation with state clearing.  
+- **`Navbar.tsx` + `Navbar.css`** – Main navigation bar used across all pages.  
+- **`Toast.tsx`** – Toast notification component used for success/error alerts.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 📁 `features/`
+
+Contains **domain-specific modules** (also called "slices" in Redux) such as authentication, cart, product, and payment.
+
+#### 📁 `apis/`
+
+API functions for authentication.
+
+- **`signInApis.ts`** – Login API logic (typically POST request).  
+- **`signUpApi.ts`** – Register API logic (typically POST request).
+
+---
+
+#### 📁 `auth/`
+
+Manages user authentication and credentials.
+
+- **`authSlice.ts`** – Redux slice for login/logout actions and state management.  
+- **`ResetPassword.tsx` + `ResetPassword.css`** – Form for password reset with styling.  
+- **`ResetPasswordLink.tsx`** – Component for password reset token verification.  
+- **`Signin.tsx` + `Signin.css`** – Login form with validation.  
+- **`signInSchema.ts`** – Zod schema for sign-in form validation.  
+- **`SignUp.tsx` + `Signup.css`** – Registration form with validation.  
+- **`signUpSchema.ts`** – Zod schema for sign-up form validation.
+
+---
+
+#### 📁 `cart/`
+
+Handles cart UI and business logic.
+
+- **`cartSlice.ts`** – Redux slice to manage cart items and operations.  
+- **`Cart.tsx` + `Cart.css`** – UI for viewing cart items, total, and remove/add functionality.
+
+---
+
+#### 📁 `payment/`
+
+Manages order creation and payment processing.
+
+- **`hooks.ts`** – Reusable React hooks related to payment or form logic.  
+- **`OrderCreate.tsx` + `.css`** – UI and logic for creating a new order.  
+- **`PaymentGateway.tsx`** – Integration with external payment systems (e.g., PayPal).  
+- **`paymentSlice.ts`** – Redux slice managing transaction status and payment response.  
+- **`TransactionPage.tsx` + `.css`** – UI for displaying payment transaction history or confirmation.
+
+---
+
+#### 📁 `products/`
+
+Handles CRUD operations for products.
+
+- **`AddProduct.tsx` + `.css`** – Admin UI to add a product.  
+- **`ProductDetail.tsx` + `.css`** – UI for detailed product view.  
+- **`ProductList.tsx` + `.css`** – Grid/list view to show all products.  
+- **`productSlice.ts`** – Redux slice for managing products (fetch, add, update, delete).  
+- **`useLazyLoad.ts`** – Custom hook for lazy loading product images/data on scroll.
+
+> 🔁 Note: Some files like `copy.txt` or `copy 2.tsx` may be backups or work-in-progress versions and should be cleaned before deployment.
+
+---
+
+### 📁 `types/`
+
+Defines global TypeScript types for consistent usage across the project.
+
+- **`auth.d.ts`** – Interfaces and types related to user authentication.  
+- **`cart.d.ts`** – Interfaces for cart items and cart state.  
+- **`product.d.ts`** – Product data types including structure and optional fields.
+
+---
+
+### 📄 `App.tsx`
+
+Root React component. Wraps all feature modules with providers like Redux, routing, and layout.
+
+---
+
+### 📄 `index.tsx`
+
+Entry point of the application. Renders the `` component into the root DOM node using ReactDOM.
+
+---
+
+### 🛠️ Configuration Files
+
+- **`.gitignore`** – Excludes `node_modules`, `.env`, and other sensitive files from version control.  
+- **`package.json` / `package-lock.json`** – Defines project dependencies, scripts, and versions.  
+- **`tsconfig.json`** – TypeScript compiler configuration for paths, strictness, and JSX settings.  
+- **`README.md`** – This documentation file.
+
+---
+
+## Best Practices Followed
+
+- Modular folder structure using **feature-based architecture**.  
+- Centralized **Redux Toolkit state management**.  
+- **Zod validation** for form schema and input safety.  
+- Clear **separation of concerns** (UI, logic, types).  
+- Use of **custom hooks** and reusable components.  
+- Typescript-first development with explicit typing.
+
+---

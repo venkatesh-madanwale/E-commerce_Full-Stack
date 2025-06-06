@@ -1,98 +1,245 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🛒 E-Commerce Backend – Microservices Architecture (NestJS)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This project is a full-featured **e-commerce backend** built using **NestJS** with a **microservices architecture**. It covers core services such as **authentication**, **product management**, **cart**, **category**, **payment**, and **user profile** handling.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
+## 📦 Project Structure Overview
 
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Project setup
-
-```bash
-$ npm install
+```
+├── apps/
+│   ├── auth/
+│   ├── cart/
+│   ├── category/
+│   ├── payment/
+│   ├── products/
+│   ├── user/
+│   ├── gateway/
+│   └── micro-services/
+├── libs/
+├── utils/
+├── prodimgs/
+├── dist/
+├── node_modules/
+├── .env
+├── Dockerfile
+├── package.json
+├── tsconfig.app.json
+└── README.md
 ```
 
-## Compile and run the project
+---
 
-```bash
-# development
-$ npm run start
+## 📁 `apps/` – Microservices
 
-# watch mode
-$ npm run start:dev
+### 🔐 `auth/` – Authentication & Authorization
 
-# production mode
-$ npm run start:prod
+Manages login, registration, password reset, and role-based access.
+
+#### `src/dto/`
+
+Contains Data Transfer Objects for user input validation using `class-validator`.
+
+- `login.dto.ts` – Fields for login (email, password).
+- `register.dto.ts` – Fields for new user registration.
+- `forgotPassword.dto.ts` – Accepts email for password reset link.
+- `resetPassword.dto.ts` – Accepts token, new password for resetting.
+
+#### `src/strategy/`
+
+- `jwt.strategy.ts` – Implements JWT validation logic via `PassportStrategy`.
+
+#### Core files:
+
+- `auth.controller.ts` – Defines API routes (login, register, reset password).
+- `auth.service.ts` – Business logic and database interaction.
+- `auth.module.ts` – Sets up dependencies and JWT strategy.
+- `roles.decorators.ts` – Custom role-based route guard decorators.
+- `roles.guard.ts` – Guards routes based on user roles.
+- `main.ts` – Bootstraps the service.
+
+---
+
+### 🛒 `cart/` – Cart Management
+
+Handles cart-related operations like adding, updating, and retrieving cart items.
+
+#### `dto/`
+
+- `add-cart.dto.ts` – Validates cart input (product ID, quantity).
+
+#### `src/`
+
+- `cart.controller.ts` – API endpoints for cart.
+- `cart.service.ts` – Cart logic and database access.
+- `cart.schema.ts` – MongoDB schema definition.
+- `cart.module.ts` – NestJS module wiring.
+- `main.ts` – Microservice bootstrap entry.
+
+---
+
+### 🗂️ `category/` – Product Categories
+
+Handles operations for creating and retrieving product categories.
+
+#### `dto/`
+
+- `category.dto.ts` – DTO for adding/editing categories.
+
+#### `schema/`
+
+- `category.schema.ts` – MongoDB schema definition for a category.
+
+#### Core:
+
+- `category.controller.ts` – API routes for category.
+- `category.service.ts` – Handles category business logic.
+- `category.module.ts` – NestJS module config.
+- `main.ts` – Service bootstrap.
+
+---
+
+### 💰 `payment/` – Payment Processing
+
+Handles payment via PayPal and stores transaction data.
+
+#### `dto/` + `schema/`
+
+- Define DTOs and schemas for handling and validating payment data.
+
+#### Core:
+
+- `payment.controller.ts` – Payment routes.
+- `payment.service.ts` – Logic to initiate and confirm transactions.
+- `payment.module.ts` – Module declaration.
+- `payment.controller.spec.ts` – Jest unit tests.
+- `main.ts` – Service entry.
+
+#### `test/`
+
+- `app.e2e-spec.ts` – End-to-end testing for payment module.
+- `jest-e2e.json` – Config for Jest testing.
+
+---
+
+### 📦 `products/` – Product Management
+
+Manages product CRUD, images, and storage.
+
+#### `dto/`
+
+- DTOs for product creation and updates.
+
+#### `schemas/`
+
+- MongoDB schema for products.
+
+#### Core:
+
+- `products.controller.ts` – Routes for product CRUD.
+- `products.service.ts` – Handles all product logic.
+- `products.module.ts` – Binds controller and service.
+- `multer.config.ts` – Handles image uploads.
+- `products.controller.spec.ts` – Unit testing file.
+- `main.ts` – Microservice bootstrap.
+
+---
+
+### 👤 `user/` – User Profile Service
+
+Manages user-related data independent of authentication.
+
+#### `schema/`
+
+- `user.schema.ts` – MongoDB user schema.
+
+#### Core:
+
+- `user.controller.ts` – Routes for user data fetch/update.
+- `user.service.ts` – Service logic.
+- `user.module.ts` – Module structure.
+- `main.ts` – Service entry.
+
+---
+
+### 📡 `gateway/` – API Gateway
+
+This service aggregates and routes all external client requests to appropriate microservices. Handles:
+
+- Authentication validation
+- Role checking
+- Zod-based request validation
+- Proxying or forwarding to services via **TCP** or HTTP
+
+> **Note**: Uses `@nestjs/microservices` for TCP communication.
+
+---
+
+## 📦 `libs/`, `utils/`, `prodimgs/`
+
+- `libs/` – Contains shared modules (not detailed here).
+- `utils/` – Utility functions and shared helpers.
+- `prodimgs/` – Stores uploaded product images.
+
+---
+
+
+---
+
+## 📚 Dependencies Summary
+
+### Core Frameworks
+
+- `@nestjs/common`, `@nestjs/core`, `@nestjs/microservices`, `@nestjs/mongoose`
+- `@nestjs/jwt`, `@nestjs/passport`, `passport-jwt`
+
+### Utilities & Helpers
+
+- `bcrypt`, `dotenv`, `uuid`, `multer`, `nodemailer`, `handlebars`
+
+### Validation & Transformation
+
+- `class-validator`, `class-transformer`, `@nestjs-modules/mailer`
+
+### Testing & Linting
+
+- `jest`, `ts-jest`, `supertest`, `eslint`, `prettier`
+
+---
+
+## 🛡️ Security & Validation
+
+- JWT-based Authentication using `passport-jwt`.
+- Role-based guards and route protection via decorators.
+- Secure input handling with DTO + `class-validator`.
+- Zod validation integrated at the gateway level.
+
+---
+
+## 🐳 Docker Support
+
+A basic Dockerfile is included for containerizing the backend services.
+
+---
+
+## Run the Backend
+
+```
+# Install dependencies
+npm install
+
+# Start all services (example)
+npm run start:dev
+
+# Run tests
+npm run test
 ```
 
-## Run tests
+---
 
-```bash
-# unit tests
-$ npm run test
+## 🔄 Communication
 
-# e2e tests
-$ npm run test:e2e
+All services communicate using **TCP transport** via `@nestjs/microservices`. The API Gateway acts as a **single entry point** for clients (e.g., React/Vue frontend).
 
-# test coverage
-$ npm run test:cov
+---
 ```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+This detailed `README.md` provides a comprehensive overview of your NestJS-based microservices e-commerce backend, including project structure, service responsibilities, scripts, dependencies, and important notes on security and communication. You can paste this directly into your project’s `README.md`.
